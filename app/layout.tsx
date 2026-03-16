@@ -2,8 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
-
+import { cn } from "@/lib/utils"
+import Providers from "@/components/custom/Providers"
 const fontSans = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -23,10 +23,15 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontSans.variable, "font-mono", fontMono.variable)}
+      className={cn(
+        "antialiased",
+        fontSans.variable,
+        "font-mono",
+        fontMono.variable
+      )}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
