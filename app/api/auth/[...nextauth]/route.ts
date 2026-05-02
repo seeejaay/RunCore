@@ -4,7 +4,7 @@ import GoogleProvider from "next-auth/providers/google"
 import { db } from "@/lib/firebase"
 import { doc, setDoc } from "firebase/firestore"
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     StravaProvider({
       clientId: process.env.NEXT_PUBLIC_STRAVA_CLIENT_ID!,
@@ -30,7 +30,7 @@ const handler = NextAuth({
     async jwt({ token, account }) {
       if (account) {
         const userRef = doc(db, "users", token.sub!)
-        
+
         if (account.provider === "strava") {
           await setDoc(
             userRef,
@@ -64,6 +64,8 @@ const handler = NextAuth({
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }
