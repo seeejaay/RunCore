@@ -104,7 +104,7 @@ export default function RunCoreDashboard() {
 
   if (authStatus === "loading") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0d1117] text-[#0e7452]">
+      <div className="flex min-h-screen items-center justify-center bg-background text-secondary">
         LOADING...
       </div>
     )
@@ -112,13 +112,13 @@ export default function RunCoreDashboard() {
 
   if (!session) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0d1117] text-white">
+      <div className="flex min-h-screen items-center justify-center bg-background text-foreground">
         <div className="space-y-6 text-center">
-          <h1 className="text-5xl font-black text-[#0e7452]">RUN CORE</h1>
-          <p className="text-gray-400">Connect your Strava account</p>
+          <h1 className="text-5xl font-black text-primary">RUN CORE</h1>
+          <p className="text-muted-foreground">Connect your Strava account</p>
           <Button
             onClick={() => signIn("strava")}
-            className="h-12 bg-[#FC5200] px-10 text-lg font-bold text-white hover:bg-[#e34402]"
+            className="h-12 bg-secondary px-10 text-lg font-bold text-secondary-foreground hover:bg-secondary/80"
           >
             Connect with Strava
           </Button>
@@ -130,42 +130,47 @@ export default function RunCoreDashboard() {
   const points = polyline ? toSvgPoints(decodePolyline(polyline)) : ""
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#0d1117] p-6 text-white">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-6 text-foreground">
       <div className="w-full max-w-xl space-y-6 text-center">
-        <h1 className="text-3xl font-black text-[#0e7452]">RUN CORE</h1>
-        <p className="text-sm text-gray-400">
+        <h1 className="text-3xl font-black text-primary">RUN CORE</h1>
+        <p className="text-sm text-muted-foreground">
           Welcome back, {session.user?.name}
         </p>
 
         <div className="flex items-center justify-center gap-3">
           <Button
             onClick={handleStravaSync}
-            className="h-10 bg-[#FC5200] font-bold text-white hover:bg-[#e34402]"
+            className="h-10 bg-secondary font-bold text-secondary-foreground hover:bg-secondary/80"
           >
             Sync Strava
           </Button>
           <Button
             onClick={() => signOut()}
             variant="ghost"
-            className="text-xs text-gray-500 hover:text-white"
+            className="text-xs text-muted-foreground hover:text-foreground"
           >
             Logout
           </Button>
         </div>
 
         {status && (
-          <div className="rounded-full bg-[#0e7452] px-4 py-2 text-xs font-bold uppercase">
+          <div className="rounded-full bg-accent px-4 py-2 text-xs font-bold text-accent-foreground uppercase">
             {status}
           </div>
         )}
 
         {polyline && points && (
-          <div className="mx-auto mt-6 w-[320px] rounded-lg border border-[#2d3136] bg-[#111] p-4">
-            <svg width="300" height="300" viewBox="0 0 300 300">
+          <div className="mx-auto mt-6 w-[320px] rounded-lg border border-border bg-card p-4">
+            <svg
+              width="300"
+              height="300"
+              viewBox="0 0 300 300"
+              className="text-secondary"
+            >
               <polyline
                 points={points}
                 fill="none"
-                stroke="#FC5200"
+                stroke="currentColor"
                 strokeWidth="2"
                 strokeLinejoin="round"
                 strokeLinecap="round"

@@ -1,10 +1,11 @@
-import NextAuth from "next-auth"
+import NextAuth, { type NextAuthOptions } from "next-auth"
 import StravaProvider from "next-auth/providers/strava"
 import GoogleProvider from "next-auth/providers/google"
 import { db } from "@/lib/firebase"
 import { doc, setDoc } from "firebase/firestore"
+import { save0AuthTokens } from "@/lib/auth/userTokens"
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     StravaProvider({
       clientId: process.env.NEXT_PUBLIC_STRAVA_CLIENT_ID!,
@@ -28,31 +29,8 @@ export const authOptions = {
   ],
   callbacks: {
     async jwt({ token, account }) {
-      if (account) {
-        const userRef = doc(db, "users", token.sub!)
-
-        if (account.provider === "strava") {
-          await setDoc(
-            userRef,
-            {
-              stravaRefreshToken: account.refresh_token,
-              stravaAccessToken: account.access_token,
-              stravaAthleteId: account.providerAccountId,
-              updatedAt: new Date().toISOString(),
-            },
-            { merge: true }
-          )
-        } else if (account.provider === "google") {
-          await setDoc(
-            userRef,
-            {
-              googleAccessToken: account.access_token,
-              googleRefreshToken: account.refresh_token,
-              updatedAt: new Date().toISOString(),
-            },
-            { merge: true }
-          )
-        }
+      if (account && token.sub) {
+        await save0AuthTokens(token.sub, account)
       }
       return token
     },

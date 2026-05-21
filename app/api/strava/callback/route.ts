@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server"
-import { db } from "@/lib/firebase"
-import { doc, setDoc } from "firebase/firestore"
-
+import { saveStravaMasterToken } from "@/lib/strava/tokenStore"
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get("code")
@@ -29,18 +27,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Invalid exchange" }, { status: 400 })
     }
 
-    // Initialize/Update the user's master keys in Firestore
-    const userRef = doc(db, "users", "carl_user")
-    await setDoc(
-      userRef,
-      {
-        stravaRefreshToken: data.refresh_token,
-        athleteId: data.athlete?.id || "unknown",
-        updatedAt: new Date().toISOString(),
-      },
-      { merge: true }
-    )
-
+    await saveStravaMasterToken("carl_user", data)
     console.log("✅ Master Refresh Token saved to Firestore.")
 
     // Redirect to home so the user sees their dashboard

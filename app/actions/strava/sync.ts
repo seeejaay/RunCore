@@ -14,6 +14,10 @@ export async function syncActivities() {
     const session = await getServerSession(authOptions)
     const userId = session?.user?.id
 
+    if (!userId || typeof userId !== "string") {
+      return { success: false, error: "User not authenticated." }
+    }
+
     const refreshToken = await getUserRefreshToken(userId)
     if (!refreshToken) {
       return { success: false, error: "Please connect Strava first." }
