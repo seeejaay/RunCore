@@ -1,5 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google"
-
+import Navigation from "@/components/custom/Navigation"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import Providers from "@/components/custom/Providers"
@@ -30,7 +30,10 @@ export default function RootLayout({
       )}
     >
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navigation />
+          {children}
+        </Providers>
       </body>
     </html>
   )

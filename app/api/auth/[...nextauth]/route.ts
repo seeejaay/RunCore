@@ -1,10 +1,7 @@
 import NextAuth, { type NextAuthOptions } from "next-auth"
 import StravaProvider from "next-auth/providers/strava"
 import GoogleProvider from "next-auth/providers/google"
-import { db } from "@/lib/firebase"
-import { doc, setDoc } from "firebase/firestore"
 import { save0AuthTokens } from "@/lib/auth/userTokens"
-
 export const authOptions: NextAuthOptions = {
   providers: [
     StravaProvider({
