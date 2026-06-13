@@ -115,6 +115,14 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* prevents layout shift and covers iOS bounce */
+.rc-scroll-lock,
+html.rc-scroll-lock {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  overflow: hidden;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;
